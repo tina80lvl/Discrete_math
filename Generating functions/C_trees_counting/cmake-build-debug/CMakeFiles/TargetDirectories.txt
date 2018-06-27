@@ -1,0 +1,3 @@
+/Users/tina/Documents/ITMO/CT/DM/Generating functions/C_trees_counting/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/tina/Documents/ITMO/CT/DM/Generating functions/C_trees_counting/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/tina/Documents/ITMO/CT/DM/Generating functions/C_trees_counting/cmake-build-debug/CMakeFiles/C_trees_counting.dir
