@@ -4,13 +4,6 @@
 
 #define M 104857601
 
-std::vector <long long> repl(std::vector <long long> what, std::vector <long long> on, int it) {
-    for (int i = 0; i < it; i++) {
-        what[i] = on[i];
-    }
-    return what;
-}
-
 long long inc(long long x) {
     while (x < 0)
         x += M;
@@ -34,8 +27,7 @@ int main() {
     for (int i = 1; i < k + 1; i++) {
         int loc;
         std::cin >> loc;
-        c[i] = (- loc + M) % M;
-//        c[i] %= M;
+        c[i] = (M - loc ) % M;
     }
 
     while (n >= k) {
@@ -51,23 +43,28 @@ int main() {
             if (i % 2 == 0) {
                 cn[i] = c[i];
             } else {
-                cn[i] = (- c[i] + M) % M;
+                cn[i] = (M - c[i] ) % M;
 //                cn[i] %= M;
             }
         }
 
-        for (int i = 0; i < 2 * k + 1; i += 2) {
+        for (int i = 0; i < 2 * k + 2; i += 2) { //here +1 or +2
             long long cf = 0;
             for (int j = 0; j < i + 1; j++) {
                 long long aj, bij;
-                if (j > k)
+                if (j > k) {
                     aj = 0;
-                else
+                }
+                else {
                     aj = c[j];
-                if (i - j > k)
+                }
+
+                if (i - j > k) {
                     bij = 0;
-                else
-                    bij = c[i - j];
+                }
+                else {
+                    bij = cn[i - j];
+                }
 
                 cf = (cf + aj * bij + M) % M;
 //                cf %= M;
@@ -75,7 +72,9 @@ int main() {
             int ind = i / 2;
             r[ind] = cf;
         }
-        c = repl(c, r, k + 1);
+
+//        c = repl(c, r, k + 1);
+        std::copy(r.begin(), r.begin() + k + 1, c.begin());
 
         int ind2 = 0;
         for (int i = 0; i < 2 * k; i++) {
