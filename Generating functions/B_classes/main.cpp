@@ -1,38 +1,28 @@
 #include <iostream>
 #include <vector>
+#include <numeric>
 #include <cstdio>
 
 #define M 1000000007
-int it = 0;
 
 int gcd(int a, int b) {
-    if (b == 1)
-        return gcd(b, a % b);
-    return a;
+//    if (b == 1)
+//        return gcd(b, a % b);
+//    return a;
+    return b ? gcd(b, a % b) : a;
 }
 
-long long con(long long n, long long k) {
-    long long loc = 1;
-    for (int i = n - k + 1; i < n + 1; i++) {
-        loc *= i;
-    }
-    for (int i = 2; i < k + 1; i++) {
-        loc /= i;
-    }
-
-    return loc;
-}
-
-std::vector<long long> vec_from_str(std::string s) {
-    std::vector<long long> a, a1;
-    std::vector<long long> loc(7);
+std::string s;
+int it = 0;
+std::vector<long long> vec_from_str() {
+    std::vector<long long> a, a1, loc(7);
     if (s[it] == 'B') {
         loc[1] = 1;
         it++;
     } else {
         if (s[it] == 'L') {
             it += 2;
-            a = vec_from_str(s);
+            a = vec_from_str();
             loc[0] = 1;
             it++;
             for (int i = 1; i < 7; i++) {
@@ -44,7 +34,7 @@ std::vector<long long> vec_from_str(std::string s) {
         } else {
             if (s[it] == 'S') {
                 it += 2;
-                a = vec_from_str(s);
+                a = vec_from_str();
                 it++;
                 long long m[7][7];
 
@@ -59,7 +49,16 @@ std::vector<long long> vec_from_str(std::string s) {
                     for (int k = 1; k < 7; k++) {
                         long long sum = 0;
                         for (int i = 0; i < n / k + 1; i++) {
-                            sum += con(std::max(a[k] + i - 1, (long long) 0), i) * m[n - i * k][k - 1];
+                            long long x1 = a[k] + i - 1, x2 = i;
+                            long long loc2 = 1;
+                            if (x1 < 0) x1 = 0;
+                            for (int h = x1 - x2 + 1; h < x1 + 1; h++) {
+                                loc2 *= h;
+                            }
+                            for (int h = 2; h < x2 + 1; h++) {
+                                loc2 /= h;
+                            }
+                            sum += loc2 * m[n - i * k][k - 1];
                         }
                         m[n][k] = sum;
                     }
@@ -68,7 +67,7 @@ std::vector<long long> vec_from_str(std::string s) {
             } else {
                 if (s[it] == 'C') {
                     it += 2;
-                    a = vec_from_str(s);
+                    a = vec_from_str();
                     it++;
 
                     long long b[7][7];
@@ -97,7 +96,8 @@ std::vector<long long> vec_from_str(std::string s) {
                                 if (n % (s / g) != 0) {
                                     sti = 0;
                                 } else {
-                                    sti = b[(n * g) / s][g];
+                                    int ind = (n * g) / s;
+                                    sti = b[ind][g];
                                 }
                                 up += sti;
                             }
@@ -108,9 +108,9 @@ std::vector<long long> vec_from_str(std::string s) {
                 } else {
                     if (s[it] == 'P') {
                         it += 2;
-                        a = vec_from_str(s);
+                        a = vec_from_str();
                         it++;
-                        a1 = vec_from_str(s);
+                        a1 = vec_from_str();
                         it++;
                         for (int i = 0; i < 7; i++) {
                             long long sum = 0;
@@ -128,19 +128,14 @@ std::vector<long long> vec_from_str(std::string s) {
 }
 
 std::vector<long long> ans;
-void pr() {
-    for (int i = 0; i < 7; i++) {
-        std::cout << ans[i] << " ";
-    }
-}
-
 int main() {
 //    freopen("input.txt", "r", stdin);
 
-    std::string s;
     std::getline(std::cin, s);
-    ans = vec_from_str(s);
-    pr();
+    ans = vec_from_str();
+    for (int i = 0; i < 7; i++) {
+        std::cout << ans[i] << " ";
+    }
 
     return 0;
 }
