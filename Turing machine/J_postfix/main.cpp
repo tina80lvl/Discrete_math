@@ -22,10 +22,12 @@ std::string vala = "vala";
 std::string valo = "valo";
 std::string nxa = "nxa";
 std::string ac1 = "ac1";
-std::string op_and = "a";
-std::string op_or = "o";
-std::string aa = "aa";
-std::string aa0 = "aa0";
+std::string a = "a";
+std::string o = "o";
+std::string or_one = "o1";
+std::string or_zero = "o0";
+std::string and_one = "a1";
+std::string and_zero = "a0";
 std::string aa1 = "aa1";
 std::string oo = "oo";
 std::string oo0 = "oo0";
@@ -42,40 +44,31 @@ void next_step(std::string from, std::string from_st, std::string to_st, std::st
 int main() {
     freopen("postfixlogic.out", "w", stdout);
 
-//    std::cout << "start: s \naccept: ac \nreject: rj \nblank: _ \n";
-    std::cout << "\n";
+    std::cout << "2\n";
+    std::cout << "start: s \naccept: ac \nreject: rj \nblank: _ \n";
 
-    next_step(start, zero, blank, rd, zero, top, blank, top);
-    next_step(start, one, blank, rd, one, top, blank, top);
+    next_step(start, zero, blank, start, blank, right_step, zero, right_step);
+    next_step(start, one, blank, start, blank, right_step, one, right_step);
+    next_step(start, o, blank, start, o, top, blank, left_step);
+    next_step(start, a, blank, start, a, top, blank, left_step);
+    next_step(start, o, zero, or_zero, o, top, blank, left_step);
+    next_step(start, o, one, or_one, o, top, blank, left_step);
 
-    next_step(rd, zero, blank, rd, blank, right_step, zero, right_step);
-    next_step(rd, one, blank, rd, blank, right_step, one, right_step);
+    next_step(or_zero, o, zero, start, blank, right_step, zero, right_step);
+    next_step(or_zero, o, one, start, blank, right_step, one, right_step);
+    next_step(or_one, o, zero, start, blank, right_step, one, right_step);
+    next_step(or_one, o, one, start, blank, right_step, one, right_step);
+    next_step(start, a, zero, and_zero, a, top, blank, left_step);
+    next_step(start, a, one, and_one, a, top, blank, left_step);
 
-    next_step(rd, op_and, blank, aa, blank, top, blank, left_step);
-    next_step(rd, op_or, blank, oo, blank, top, blank, left_step);
-
-    next_step(rd, blank, blank, ac1, blank, top, blank, left_step);
-    next_step(ac1, blank, zero, ac1, zero, left_step, blank, left_step);
-    next_step(ac1, blank, one, ac1, one, left_step, blank, left_step);
-    next_step(ac1, blank, blank, accept, blank, right_step, blank, top);
-
-    next_step(aa, blank, zero, aa0, blank, top, blank, left_step);
-    next_step(aa, blank, one, aa1, blank, top, blank, left_step);
-
-    next_step(aa0, blank, zero, rd, blank, right_step, zero, right_step);
-    next_step(aa0, blank, one, rd, blank, right_step, zero, right_step);
-
-    next_step(aa1, blank, zero, rd, blank, right_step, zero, right_step);
-    next_step(aa1, blank, one, rd, blank, right_step, one, right_step);
-
-    next_step(oo, blank, zero, oo0, blank, top, blank, left_step);
-    next_step(oo, blank, one, oo1, blank, top, blank, left_step);
-
-    next_step(oo0, blank, zero, rd, blank, right_step, zero, right_step);
-    next_step(oo0, blank, one, rd, blank, right_step, one, right_step);
-
-    next_step(oo1, blank, zero, rd, blank, right_step, one, right_step);
-    next_step(oo1, blank, one, rd, blank, right_step, one, right_step);
+    next_step(and_zero, a, zero, start, blank, right_step, zero, right_step);
+    next_step(and_zero, a, one, start, blank, right_step, zero, right_step);
+    next_step(and_one, a, zero, start, blank, right_step, zero, right_step);
+    next_step(and_one, a, one, start, blank, right_step, one, right_step);
+    next_step(start, blank, blank, start, blank, top, blank, left_step);
+    next_step(start, blank, blank, start, blank, top, blank, left_step);
+    next_step(start, blank, zero, accept, zero, top, blank, top);
+    next_step(start, blank, one, accept, one, top, blank, top);
 
     for (int i = 0; i < steps.size(); i++) {
         std::cout << steps[i].first << " -> " << steps[i].second << std::endl;
